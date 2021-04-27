@@ -12,11 +12,14 @@ type Server struct {
 	todoList *todo_list.TodoList
 }
 
-func NewServer() *Server {
-	db := NewDatabase()
+func NewServer() (*Server, error) {
+	db, err := NewDatabase()
+	if err != nil {
+		return nil, err
+	}
 	server := &Server{
 		db: db, Router: mux.NewRouter(), todoList: todo_list.NewTodoList(db),
 	}
 	server.routes()
-	return server
+	return server, nil
 }

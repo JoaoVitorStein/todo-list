@@ -10,23 +10,23 @@ import (
 	"github.com/todo_list/pkg/config"
 )
 
-func NewDatabase() *sqlx.DB {
+func NewDatabase() (*sqlx.DB, error) {
 	cfg := config.NewConfig()
 
 	db, err := sqlx.Connect(cfg.DatabaseDriver, cfg.DatabaseConnectionString)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	err = db.Ping()
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	migrateDb(cfg.DatabaseConnectionString)
-	return db
+	return db, nil
 }
 
-func migrateDb(dbUrl string) {
+func migrateDb(dbUrl string) error {
 	s := bindata.Resource(migrations.AssetNames(),
 		func(name string) ([]byte, error) {
 			return migrations.Asset(name)
@@ -34,12 +34,13 @@ func migrateDb(dbUrl string) {
 
 	d, err := bindata.WithInstance(s)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	m, err := migrate.NewWithSourceInstance("go-bindata", d, dbUrl)
 	if err != nil {
-		panic(err)
+		return err
 	}
 	m.Up() // run your migrations and handle the errors above of course
+	return nil
 }

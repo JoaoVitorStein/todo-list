@@ -8,7 +8,7 @@ import (
 )
 
 func TestRepositoryGetById(t *testing.T) {
-	db := server.NewDatabase()
+	db, _ := server.NewDatabase()
 	r := todo_list.NewRepository(db)
 
 	result, err := r.GetById()
