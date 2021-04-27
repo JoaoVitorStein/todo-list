@@ -13,3 +13,14 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+/.bin
+/dist
+/.envrc
+/infra/node_modules
+/infra/cdk.out
+/infra/deploy/exitus
+
+*/.bin
+
+.vscode

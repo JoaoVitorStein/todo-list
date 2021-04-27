@@ -3,8 +3,8 @@ package todo_list_test
 import (
 	"testing"
 
-	"github.com/http-service/pkg/server"
-	"github.com/http-service/pkg/todo_list"
+	"github.com/todo_list/pkg/server"
+	"github.com/todo_list/pkg/todo_list"
 )
 
 func TestRepositoryGetById(t *testing.T) {
