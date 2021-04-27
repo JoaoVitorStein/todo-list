@@ -1,9 +1,6 @@
 package server
 
 import (
-	"log"
-	"os"
-
 	migrate "github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
@@ -18,14 +15,12 @@ func NewDatabase() *sqlx.DB {
 
 	db, err := sqlx.Connect(cfg.DatabaseDriver, cfg.DatabaseConnectionString)
 	if err != nil {
-		log.Fatalln(err)
-		os.Exit(1)
+		panic(err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		log.Fatalln(err)
-		os.Exit(1)
+		panic(err)
 	}
 	migrateDb(cfg.DatabaseConnectionString)
 	return db
@@ -39,13 +34,12 @@ func migrateDb(dbUrl string) {
 
 	d, err := bindata.WithInstance(s)
 	if err != nil {
-		log.Fatalln(err)
-		os.Exit(1)
+		panic(err)
 	}
+
 	m, err := migrate.NewWithSourceInstance("go-bindata", d, dbUrl)
 	if err != nil {
-		log.Fatalln(err)
-		os.Exit(1)
+		panic(err)
 	}
 	m.Up() // run your migrations and handle the errors above of course
 }
