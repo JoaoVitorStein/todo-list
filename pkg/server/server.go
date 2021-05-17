@@ -9,7 +9,7 @@ import (
 type Server struct {
 	db       *sqlx.DB
 	Router   *mux.Router
-	todoList *todo_list.TodoList
+	todoList *todo_list.Service
 }
 
 func NewServer() (*Server, error) {
@@ -18,7 +18,7 @@ func NewServer() (*Server, error) {
 		return nil, err
 	}
 	server := &Server{
-		db: db, Router: mux.NewRouter(), todoList: todo_list.NewTodoList(db),
+		db: db, Router: mux.NewRouter(), todoList: todo_list.NewService(todo_list.NewRepository(db)),
 	}
 	server.routes()
 	return server, nil

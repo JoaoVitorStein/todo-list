@@ -6,24 +6,25 @@ import (
 	"github.com/todo_list/pkg/todo_list"
 )
 
-var getByIdMock func() (int, error)
+var getByIdMock func(int) (*todo_list.TodoListEntity, error)
 
 type mockRepository struct {
 }
 
-func (m *mockRepository) GetById() (int, error) {
-	return getByIdMock()
+func (m *mockRepository) GetById(id int) (*todo_list.TodoListEntity, error) {
+	return getByIdMock(id)
 }
 
 func TestServiceGetById(t *testing.T) {
 	s := todo_list.NewService(&mockRepository{})
 
-	getByIdMock = func() (int, error) {
-		return 1, nil
+	response := &todo_list.TodoListEntity{Id: 1, Description: "test", Done: false}
+	getByIdMock = func(id int) (*todo_list.TodoListEntity, error) {
+		return response, nil
 	}
-	result, _ := s.GetById()
+	result, _ := s.GetById(1)
 
-	if result != 1 {
-		t.Errorf("repository.getById got = '%v', want '%v'", result, 1)
+	if result != response {
+		t.Errorf("repository.getById got = '%v', want '%v'", result, response)
 	}
 }

@@ -1,6 +1,7 @@
 package todo_list_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/todo_list/pkg/server"
@@ -10,14 +11,15 @@ import (
 func TestRepositoryGetById(t *testing.T) {
 	db, _ := server.NewDatabase()
 	r := todo_list.NewRepository(db)
-
-	result, err := r.GetById()
-
-	if err != nil {
-		t.Errorf("repository.getById threw an error '%v'", err)
+	item := &todo_list.TodoListEntity{
+		Id: 1, Description: "test", Done: false,
 	}
 
-	if result != 1 {
-		t.Errorf("repository.getById got = '%v', want '%v'", result, 1)
+	db.NamedExec("INSERT INTO todo_list(id, description, done) VALUES (:Id, :Description, :Done)", &item)
+
+	result, _ := r.GetById(item.Id)
+
+	if !reflect.DeepEqual(item, result) {
+		t.Errorf("repository.getById got = '%v', want '%v'", result, item)
 	}
 }

@@ -3,20 +3,25 @@ package todo_list
 import "github.com/jmoiron/sqlx"
 
 type repository interface {
-	GetById() (int, error)
+	GetById(int) (*TodoListEntity, error)
 }
 
 type repositoryPg struct {
 	db *sqlx.DB
 }
 
+type TodoListEntity struct {
+	Id          int
+	Description string
+	Done        bool
+}
+
 func NewRepository(db *sqlx.DB) repository {
 	return &repositoryPg{db: db}
 }
 
-func (r *repositoryPg) GetById() (int, error) {
-	row := r.db.QueryRow("SELECT 1 as test")
-	var test int
-	err := row.Scan(&test)
-	return test, err
+func (r *repositoryPg) GetById(id int) (*TodoListEntity, error) {
+	var todoListItem TodoListEntity
+	err := r.db.Get(&todoListItem, "SELECT * FROM todo_list WHERE id = $1", id)
+	return &todoListItem, err
 }

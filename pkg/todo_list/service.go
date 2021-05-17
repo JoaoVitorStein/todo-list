@@ -10,6 +10,6 @@ func NewService(repository repository) *Service {
 	}
 }
 
-func (s *Service) GetById() (int, error) {
-	return s.repository.GetById()
+func (s *Service) GetById(id int) (*TodoListEntity, error) {
+	return s.repository.GetById(id)
 }
