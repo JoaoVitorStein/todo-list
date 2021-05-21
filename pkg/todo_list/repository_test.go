@@ -15,8 +15,7 @@ func TestRepositoryGetById(t *testing.T) {
 		Id: 1, Description: "test", Done: false,
 	}
 
-	db.NamedExec("INSERT INTO todo_list(id, description, done) VALUES (:Id, :Description, :Done)", &item)
-
+	db.NamedExec("INSERT INTO todo_list(id, description, done) VALUES (:id, :description, :done)", &item)
 	result, _ := r.GetById(item.Id)
 
 	if !reflect.DeepEqual(item, result) {
