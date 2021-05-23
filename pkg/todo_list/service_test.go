@@ -11,12 +11,12 @@ var getByIdMock func(int) (*todo_list.TodoListEntity, error)
 type mockRepository struct {
 }
 
-func (m *mockRepository) GetById(id int) (*todo_list.TodoListEntity, error) {
+func (m mockRepository) GetById(id int) (*todo_list.TodoListEntity, error) {
 	return getByIdMock(id)
 }
 
 func TestServiceGetById(t *testing.T) {
-	s := todo_list.NewService(&mockRepository{})
+	s := todo_list.NewService(mockRepository{})
 
 	response := &todo_list.TodoListEntity{Id: 1, Description: "test", Done: false}
 	getByIdMock = func(id int) (*todo_list.TodoListEntity, error) {

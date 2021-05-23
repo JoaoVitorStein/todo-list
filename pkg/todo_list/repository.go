@@ -10,6 +10,8 @@ type repositoryPg struct {
 	db *sqlx.DB
 }
 
+var _ repository = NewRepository(nil)
+
 type TodoListEntity struct {
 	Id          int
 	Description string
@@ -17,10 +19,10 @@ type TodoListEntity struct {
 }
 
 func NewRepository(db *sqlx.DB) repository {
-	return &repositoryPg{db: db}
+	return repositoryPg{db: db}
 }
 
-func (r *repositoryPg) GetById(id int) (*TodoListEntity, error) {
+func (r repositoryPg) GetById(id int) (*TodoListEntity, error) {
 	var todoListItem TodoListEntity
 	err := r.db.Get(&todoListItem, "SELECT * FROM todo_list WHERE id = $1", id)
 	return &todoListItem, err

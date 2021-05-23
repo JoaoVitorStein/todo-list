@@ -8,7 +8,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (t *Server) handleTodoListGetById() http.HandlerFunc {
+func (t Server) handleTodoListGetById() http.HandlerFunc {
 	type response struct {
 		Id          int    `json:"id"`
 		Description string `json:"description"`
