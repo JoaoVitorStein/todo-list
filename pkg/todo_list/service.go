@@ -13,3 +13,11 @@ func NewService(repository repository) Service {
 func (s Service) GetById(id int) (*TodoListEntity, error) {
 	return s.repository.GetById(id)
 }
+
+func (s Service) Save(data TodoListEntity) (int, error) {
+	return s.repository.Save(data)
+}
+
+func (s Service) Delete(id int) error {
+	return s.repository.Delete(id)
+}
