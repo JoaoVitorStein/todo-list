@@ -5,7 +5,6 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	bindata "github.com/golang-migrate/migrate/v4/source/go_bindata"
 	"github.com/jmoiron/sqlx"
-	_ "github.com/lib/pq"
 	"github.com/todo_list/migrations"
 	"github.com/todo_list/pkg/config"
 )
